@@ -12,7 +12,7 @@ from sklearn.ensemble import RandomForestRegressor
 
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 
-# Load datasets
+# Load the datasets
 cab = pd.read_csv("cab_rides.csv")
 weather = pd.read_csv("weather.csv")
 
@@ -23,11 +23,11 @@ cab = cab.dropna(subset=["price"])
 cab["datetime"] = pd.to_datetime(cab["time_stamp"], unit="ms")
 weather["datetime"] = pd.to_datetime(weather["time_stamp"], unit="s")
 
-# Sort before merging
+# Sort before merging the data sets
 cab = cab.sort_values("datetime")
 weather = weather.sort_values("datetime")
 
-# Merge datasets
+# Merge the datasets
 merged = pd.merge_asof(
     cab,
     weather,
@@ -42,12 +42,9 @@ merged = pd.merge_asof(
 # Sample data
 merged = merged.sample(n=100000, random_state=42)
 
-# Features (UPDATED)
 features = [
     "distance",
     "cab_type",
-    "destination",
-    "source",
     "surge_multiplier",
     "name",
     "temp",
@@ -61,7 +58,6 @@ merged = merged[features + [target]].copy()
 X = merged[features]
 y = merged[target]
 
-# Separate feature types
 numeric_features = [
     "distance",
     "surge_multiplier",
@@ -71,12 +67,9 @@ numeric_features = [
 
 categorical_features = [
     "cab_type",
-    "destination",
-    "source",
     "name"
 ]
 
-# Preprocessing
 numeric_transformer = Pipeline([
     ("imputer", SimpleImputer(strategy="median")),
     ("scaler", StandardScaler())
@@ -92,7 +85,6 @@ preprocessor = ColumnTransformer([
     ("cat", categorical_transformer, categorical_features)
 ])
 
-# Train/test split
 X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.2, random_state=42
 )
@@ -136,12 +128,10 @@ results = pd.DataFrame({
 print("\nModel Comparison:")
 print(results)
 
-# Prediction loop (UPDATED INPUT — no hour/day anymore)
+# Prediction loop 
 while True:
     distance = float(input("\nEnter distance: "))
     cab_type = input("Enter cab type (Uber/Lyft): ")
-    source = input("Enter source: ")
-    destination = input("Enter destination: ")
     surge = float(input("Enter surge multiplier: "))
     name = input("Enter ride type (UberX, Lyft, Shared, Lux, etc.): ")
     temp = float(input("Enter temperature: "))
@@ -150,8 +140,6 @@ while True:
     new_ride = pd.DataFrame([{
         "distance": distance,
         "cab_type": cab_type,
-        "destination": destination,
-        "source": source,
         "surge_multiplier": surge,
         "name": name,
         "temp": temp,
