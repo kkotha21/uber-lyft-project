@@ -1,0 +1,143 @@
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+% The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+\begin{document}
+
+\title{Uber/Lyft Price Prediction with Regression Models\\
+}
+
+\author{\IEEEauthorblockN{1\textsuperscript{st} Kunal Kotha}
+\IEEEauthorblockA{\textit{School of Computing} \\
+\textit{University of Nebraska-Lincoln}\\
+Lincoln, Nebraska, USA \\
+kkotha3@huskers.unl.edu}
+\and
+\IEEEauthorblockN{2\textsuperscript{nd} Jakobi Washington}
+\IEEEauthorblockA{\textit{School of Computing} \\
+\textit{University of Nebraska-Lincoln}\\
+Lincoln, Nebraska, USA \\
+jwashington5@huskers.unl.edu}
+\and
+\IEEEauthorblockN{3\textsuperscript{rd} Immanuel Soh}
+\IEEEauthorblockA{\textit{School of Computing} \\
+\textit{University of Nebraska-Lincoln}\\
+Lincoln, Nebraska, USA \\
+immanuelbsoh@gmail.com}
+}
+
+\maketitle
+
+\begin{abstract}
+Ride-sharing services such as Uber and Lyft calculate fluctuations in pricing in real-time in order to maintain supply and demand. Doing this requires the use of several factors like distance, time of day, weather, and location. Knowing which factors affect the fluctuations the most, however, can be a daunting task for most consumers. Thankfully, modern tools for data analysis can help, like machine learning models. This study compares two different regression models for this task by looking at a dataset of cab records that give information about price, surge multipliers, cab type, and destination. It then combines that data with related weather data to predict the price of future cab rides with these factors. By training both Linear Regression and Random Forest Regression models in scikit-learn, we were able to determine which model more consistently predicted future Uber and Lyft ride prices based on the given factors in the data. Results showed that Random Forest Regression outperformed simple Linear Regression with lower MAE (Mean Absolute Error) and RMSE (Root Mean Squared Error), as well as a higher R² score. Specifically, Random Forest Regression outperformed Linear Regression in MAE (1.258 vs 1.778), RMSE (1.917 vs 2.511), and R² score (0.957 vs 0.927), which indicates that Random Forest Regression gives more accurate predictions and more explanation of the variance in ride prices compared to using simple Linear Regression. It was concluded that Random Forest Regression Models are more suitable for use in estimating future Uber and Lyft ride prices through capturing non-linear patterns that simple Linear Regression may not be able to observe, as evidenced by the performance metrics, despite the relatively high computational cost of using a Random Forest Regression model compared to a simple Linear Regression model.
+\end{abstract}
+
+\begin{IEEEkeywords}
+MAE, RMSE, R² score
+\end{IEEEkeywords}
+
+\section{Introduction}
+\subsection{Motivation}
+Ride-sharing services like Uber and Lyft implement fluctuating pricing on a variety of factors. For the average consumer, however, what factors that cause these price fluctuations can be hard to discern, especially considering that Uber and Lyft stay quiet about what exactly influences these fluctuations. By determining how different factors influence the price of a ride, we can make it easier for customers to find rides and better meet their needs. The methods used to help determine which factors can most significantly affect fluctuating pricing can be determined using a variety of machine learning models, including several kinds of regression models. What type of model works best, however, can be hard to determine. For the purposes of this study, we compared two different kinds of regression models, simple Linear Regression and Random Forest Regression, to determine which is more suitable for determining which factors most drastically influence rideshare pricing from Uber and Lyft.
+\subsection{Methodology}
+Since our focus was on regression algorithms, we compared simple Linear Regression and a slightly more complex algorithm called Random Forest Regression. To accurately assess how each model compared to the other, we ensured that both models received the same data. We accomplished this by loading in CSV files from an external Kaggle dataset[1], normalizing the data, sorting the data, and merging the datasets into a format that was easy to input into our Linear Regression and Random Forest Regression models. Once we properly formatted our data for easy input, we fed it to our models and waited for the results.
+
+We loaded in our data using Pandas, a common python data analysis library. Once we loaded our data, we normalized it by dropping rows in our cab records that didn't include pricing and converting the timestamps provided in both CSV files into more easily interpreted time units like seconds and milliseconds. After that was complete, the datasets were both sorted by time units before being merged into one complete, easy to read dataset.
+
+We then decided to train and fit the models with the following input features towards a target feature "price": "distance," "cab\_type," "surge\_multiplier," "name," "temp," and "rain."
+
+\subsection{Results}
+After training our models using our normalized and merged data designed for easy input, we received the following evaluation metric results after running our program:
+\begin{center}
+\begin{verbatim}
+Model Comparison:
+               Model    MAE   RMSE     R2
+0  Linear Regression  1.778  2.511  0.927
+1      Random Forest  1.258  1.917  0.957
+\end{verbatim}
+\end{center}
+
+\subsection{Conclusions}
+As demonstrated by the following metrics—MAE, RMSE, and R² score— Random Forest Regression outperformed simple Linear Regression in every metric we used. Therefore we concluded that Random Forest Regression was the stronger candidate for accurately predicting price given the different factors that could cause fluctuations.
+
+\section{Problem}
+As stated before, the focus of this study is to compare two regression models to determine which is better suited to estimate an accurate price based on knowledge of several factors that can cause pricing to fluctuate. This focus is intended to explore a way that consumers can more accurate get an estimate on how much they will spend on a ride given certain known factors that can potentially influence the price either positively or negatively. We decided to focus on regression models specifically because of their relative simplicity and ability to quantify the relationship between variables and both predicted and actual numerical outcomes, allowing for identification of which factors matter most when it comes to making ride-share prices fluctuate.
+
+\subsection{Linear Regression Inputs and Outputs}
+For our simple Linear Regression model, we decided on using "distance"(in miles), "cab\_type"(Uber or Lyft), "surge\_multiplier"(the multiplier by which price was increased, default 1), "name,"(visible type of the cab e.g.: Uber Pool, UberXL), "temp"(in Fahrenheit), and "rain"(in inches at that hour) as our input features because we hypothesized that these would be the most influential factors for determining price fluctuations. Naturally, the output would be "price(estimate in US Dollars)."
+
+\subsection{Random Forest Regression Inputs and Outputs}
+For our Random Forest Regression model, we used the same inputs and outputs as our simple Linear Regression model for consistency in our later comparison of the metrics of both models.
+
+\section{Methodology}
+As mentioned earlier, we obtained our original datasets from Kaggle in the form of CSV files[1]. To ensure fair comparison between our two regression models, we used the same input data for both models. To do this, we decided that it would make the most sense to merge the datasets for cab rides and weather into one. We accomplished this by loading in the data using Pandas, normalizing both datasets by dropping rows in the cab rides dataset that didn't include pricing and converting the timestamps provided in both datasets into more intuitive time units like seconds and milliseconds. Once the sets were properly normalized, we sorted the datasets according to their time units. Once that was finished, we then merged the two datasets into one and input it into both of our models.
+
+\section{Results/Model Comparison}
+Here is the output received:
+\begin{center}
+\begin{verbatim}
+Model Comparison:
+               Model    MAE   RMSE     R2
+0  Linear Regression  1.778  2.511  0.927
+1      Random Forest  1.258  1.917  0.957
+\end{verbatim}
+\end{center}
+\subsection{Linear Regression}
+We found that Linear Regression trained very quickly due to its simplicity and was fairly accurate, making it a good "quick and dirty" solution if short on time. However, it became clear that this simplicity would actually become its greatest weakness compared to the more sophisticated approach of Random Forest Regression.
+
+For instance, Linear Regression returned a MAE of 1.778, meaning the predictions deviate from actual observed values by around that much money.
+
+\subsection{Random Forest Regression}
+Random Forest Regression trained much more slowly than Linear Regression, taking several seconds to a few minutes compared to Linear Regression's near-instantaneous output. However, we found that it performed more accurately compared to Linear Regression's output.
+
+Continuing with our MAE example, Random Forest Regression returned a MAE of 1.258, meaning it was around 52 cents more accurate than simple Linear Regression on average. Additionally, the difference in RMSE is even more dramatic, with Random Forest pulling ahead with an RMSE of 1.917 compared to Linear Regression's 2.511, demonstrating that outliers are much more detrimental to simple Linear Regression's predictions than for Random Forest's.
+
+\section{Conclusions}
+It was thus concluded that despite the speed of simple Linear Regression's calculations, its greatest strength also proves to be its greatest weakness, namely being more easily swayed by outliers in the data and just not being as accurate as Random Forest Regression's more sophisticated approach.
+
+While simple Linear Regression isn't as accurate as Random Forest Regression, it can still be a good tool to ballpark an estimate of price for significantly less time, keeping its value as a tool.
+
+\subsection{Pros of our approach}
+This study was focused on comparing a couple of regression machine learning models to see which would be more effective, and we learned that due to Random Forest Regression's robust algorithm, it gave more accurate and stable results at the cost of time and computational resources. Due to the nature of our problem, exploring regression models make much more sense than say, a classification model.
+
+\subsection{Cons of our approach}
+Of course, since we only compared two regression models, we do not quite know about what specific differences between our two models caused Random Forest Regression to outperform simple Linear Regression in all of our metrics. One potential remedy to this problem would be to compare some more complex or naive regression algorithms to see what features in each algorithm affect predictive accuracy, like where the computational cost of an algorithm can have diminishing returns.
+
+\section*{Acknowledgment}
+
+We would like to thank the support of our instructors and fellow students at the University of Nebraska-Lincoln, as well as our loved ones.
+
+\section*{References}
+
+Please number citations consecutively within brackets \cite{b1}. The 
+sentence punctuation follows the bracket \cite{b2}. Refer simply to the reference 
+number, as in \cite{b3}---do not use ``Ref. \cite{b3}'' or ``reference \cite{b3}'' except at 
+the beginning of a sentence: ``Reference \cite{b3} was the first $\ldots$''
+
+Number footnotes separately in superscripts. Place the actual footnote at 
+the bottom of the column in which it was cited. Do not put footnotes in the 
+abstract or reference list. Use letters for table footnotes.
+
+Unless there are six authors or more give all authors' names; do not use 
+``et al.''. Papers that have not been published, even if they have been 
+submitted for publication, should be cited as ``unpublished'' \cite{b4}. Papers 
+that have been accepted for publication should be cited as ``in press'' \cite{b5}. 
+Capitalize only the first word in a paper title, except for proper nouns and 
+element symbols.
+
+For papers published in translation journals, please give the English 
+citation first, followed by the original foreign-language citation \cite{b6}.
+
+\begin{thebibliography}{00}
+\bibitem{b1} RaviMunde, ``Uber \& Lyft Cab prices:
+Cab and Weather dataset to predict cab prices against weather''. https://www.kaggle.com/datasets/ravi72munde/uber-lyft-cab-prices, 2019. Kaggle.
+\end{thebibliography}
+
+\end{document}
