@@ -123,7 +123,7 @@ results = pd.DataFrame({
     "MAE": [lr_mae, rf_mae],
     "RMSE": [lr_rmse, rf_rmse],
     "R2": [lr_r2, rf_r2]
-})
+}).round(3)
 
 print("\nModel Comparison:")
 print(results)
