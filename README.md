@@ -8,8 +8,7 @@ This project predicts Uber and Lyft ride prices using machine learning.
 
 ## Features
 - Distance
-- Cab type
-- Source & destination
+- Cab name & type
 - Surge multiplier
 - Temperature & rain
 
